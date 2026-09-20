@@ -295,6 +295,35 @@
   .cta:hover, .cta:focus-visible { background: var(--berry); }
   .cta:focus-visible { outline: 2px solid var(--brass-bright); outline-offset: 2px; }
 
+  .fallback-email {
+    margin: 10px 0 0;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #6B6350;
+    position: relative;
+  }
+  .fallback-email a {
+    color: #4A4534;
+    text-decoration: underline;
+  }
+  .fallback-email a:hover, .fallback-email a:focus-visible { color: var(--berry); }
+  .copied-msg {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    background: var(--bottle-deep);
+    color: var(--label);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .copied-msg.show { display: block; }
+
   /* ---------- fine print / footer ---------- */
   .fine {
     max-width: 560px;
@@ -409,7 +438,8 @@
           <li>Written notes on form &amp; loading</li>
           <li>Weekly check&#8209;in message</li>
         </ul>
-        <a class="cta" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20House%20Pour&body=Hey!%20I%27d%20like%20to%20start%20The%20House%20Pour%20(Standard)%206-week%20block.">Order this block</a>
+        <a class="cta" data-tier="Standard" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20House%20Pour&body=Hey!%20I%27d%20like%20to%20start%20The%20House%20Pour%20(Standard)%206-week%20block.">Order this block</a>
+        <p class="fallback-email">or email <a href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a> directly<span class="copied-msg">Copied!</span></p>
       </div>
 
       <div class="label-card featured">
@@ -425,7 +455,8 @@
           <li>Daily check&#8209;ins &amp; guidance</li>
           <li>Priority, same&#8209;day response times</li>
         </ul>
-        <a class="cta" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20Top%20Shelf&body=Hey!%20I%27d%20like%20to%20start%20The%20Top%20Shelf%20(Premium)%206-week%20block.">Order this block</a>
+        <a class="cta" data-tier="Premium" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20Top%20Shelf&body=Hey!%20I%27d%20like%20to%20start%20The%20Top%20Shelf%20(Premium)%206-week%20block.">Order this block</a>
+        <p class="fallback-email">or email <a href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a> directly<span class="copied-msg">Copied!</span></p>
       </div>
 
     </div>
@@ -441,6 +472,22 @@
     <a class="email-link" href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a>
     <p class="signoff">Gym and Tonic — coached from wherever you train</p>
   </footer>
+
+  <script>
+    document.querySelectorAll('.cta').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var email = 'arrizonedgar91@gmail.com';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).catch(function () {});
+        }
+        var note = btn.parentElement.querySelector('.copied-msg');
+        if (note) {
+          note.classList.add('show');
+          setTimeout(function () { note.classList.remove('show'); }, 4000);
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
