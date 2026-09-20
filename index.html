@@ -282,14 +282,18 @@
 
   .cta {
     display: inline-block;
+    width: 100%;
     text-align: center;
     text-decoration: none;
     background: var(--bottle-deep);
     color: var(--label);
+    font-family: 'Work Sans', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
     padding: 12px 0;
+    border: none;
     border-radius: 3px;
+    cursor: pointer;
     transition: background 0.15s ease;
   }
   .cta:hover, .cta:focus-visible { background: var(--berry); }
@@ -323,6 +327,97 @@
     white-space: nowrap;
   }
   .copied-msg.show { display: block; }
+
+  /* ---------- order form ---------- */
+  .order { padding: 60px 0; }
+  .order-card {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--label);
+    color: var(--ink);
+    border-radius: 3px;
+    padding: 34px 30px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .order-card::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid var(--label-line);
+    pointer-events: none;
+  }
+  .order .pricing-head { margin-bottom: 26px; }
+  .order .pricing-head p { color: #5C5443; }
+
+  .field { margin-bottom: 18px; border: none; padding: 0; }
+  .field label, .field legend {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #3A3428;
+    margin-bottom: 6px;
+    padding: 0;
+  }
+  .field .opt { font-weight: 400; color: #7C7460; }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field textarea {
+    width: 100%;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: #FBF8EF;
+    border: 1px solid var(--label-line);
+    border-radius: 3px;
+    padding: 10px 12px;
+  }
+  .field input:focus-visible, .field textarea:focus-visible {
+    outline: 2px solid var(--brass-bright);
+    outline-offset: 1px;
+  }
+  .field textarea { resize: vertical; }
+
+  .tier-choice {
+    display: flex;
+    gap: 10px;
+  }
+  .tier-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #3A3428;
+    background: #FBF8EF;
+    border: 1px solid var(--label-line);
+    border-radius: 3px;
+    padding: 10px 8px;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+  .tier-option:has(input:checked) {
+    background: var(--bottle-deep);
+    color: var(--label);
+    border-color: var(--bottle-deep);
+  }
+  .tier-option input { accent-color: var(--brass-bright); }
+
+  .submit-btn { margin-top: 4px; }
+
+  .order-thanks {
+    background: #FBF8EF;
+    border: 1px solid var(--label-line);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-align: center;
+    margin: 0 0 20px;
+  }
 
   /* ---------- fine print / footer ---------- */
   .fine {
@@ -438,8 +533,7 @@
           <li>Written notes on form &amp; loading</li>
           <li>Weekly check&#8209;in message</li>
         </ul>
-        <a class="cta" data-tier="Standard" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20House%20Pour&body=Hey!%20I%27d%20like%20to%20start%20The%20House%20Pour%20(Standard)%206-week%20block.">Order this block</a>
-        <p class="fallback-email">or email <a href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a> directly<span class="copied-msg">Copied!</span></p>
+        <button type="button" class="cta" data-tier="Standard">Choose this pour</button>
       </div>
 
       <div class="label-card featured">
@@ -455,8 +549,7 @@
           <li>Daily check&#8209;ins &amp; guidance</li>
           <li>Priority, same&#8209;day response times</li>
         </ul>
-        <a class="cta" data-tier="Premium" href="mailto:arrizonedgar91@gmail.com?subject=Gym%20and%20Tonic%20%E2%80%94%20The%20Top%20Shelf&body=Hey!%20I%27d%20like%20to%20start%20The%20Top%20Shelf%20(Premium)%206-week%20block.">Order this block</a>
-        <p class="fallback-email">or email <a href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a> directly<span class="copied-msg">Copied!</span></p>
+        <button type="button" class="cta" data-tier="Premium">Choose this pour</button>
       </div>
 
     </div>
@@ -466,27 +559,97 @@
 
   <hr class="rule">
 
+  <section class="order wrap" id="order">
+    <div class="order-card">
+      <div class="pricing-head">
+        <h2>Book your block</h2>
+        <p>Send me your info and which pour you want — I'll follow up by email to get you started.</p>
+      </div>
+
+      <form action="https://formsubmit.co/arrizonedgar91@gmail.com" method="POST" id="order-form">
+        <input type="hidden" name="_subject" value="New Gym and Tonic block request">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" id="order-next" value="">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="Name" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="Email" required>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="phone" name="Phone">
+        </div>
+
+        <fieldset class="field">
+          <legend>Which pour?</legend>
+          <div class="tier-choice">
+            <label class="tier-option">
+              <input type="radio" name="Package" value="Standard ($100 / 6 wks)" required>
+              <span>Standard — $100</span>
+            </label>
+            <label class="tier-option">
+              <input type="radio" name="Package" value="Premium ($150 / 6 wks)" required>
+              <span>Premium — $150</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="notes">Anything I should know? <span class="opt">(optional)</span></label>
+          <textarea id="notes" name="Notes" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="cta submit-btn">Send my info</button>
+        <p class="fallback-email">or email <a href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a> directly</p>
+      </form>
+    </div>
+  </section>
+
+  <hr class="rule">
+
   <footer class="wrap">
     <h2>Ready when you are</h2>
-    <p>Tap a tier above, or just send me a note.</p>
+    <p>Fill out the form above, or just send me a note.</p>
     <a class="email-link" href="mailto:arrizonedgar91@gmail.com">arrizonedgar91@gmail.com</a>
     <p class="signoff">Gym and Tonic — coached from wherever you train</p>
   </footer>
 
   <script>
-    document.querySelectorAll('.cta').forEach(function (btn) {
+    // Pre-select a package and scroll to the order form when a "Choose this pour" button is clicked
+    document.querySelectorAll('.labels .cta').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var email = 'arrizonedgar91@gmail.com';
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(email).catch(function () {});
-        }
-        var note = btn.parentElement.querySelector('.copied-msg');
-        if (note) {
-          note.classList.add('show');
-          setTimeout(function () { note.classList.remove('show'); }, 4000);
-        }
+        var tier = btn.getAttribute('data-tier');
+        var radios = document.querySelectorAll('input[name="Package"]');
+        radios.forEach(function (r) {
+          r.checked = r.value.indexOf(tier) === 0;
+        });
+        document.getElementById('order').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
+
+    // Redirect back to this same page (with a confirmation flag) after a successful submit
+    var nextField = document.getElementById('order-next');
+    if (nextField) {
+      nextField.value = window.location.href.split('?')[0].split('#')[0] + '?sent=true#order';
+    }
+
+    // Show a thank-you message if we just returned from a successful submission
+    if (window.location.search.indexOf('sent=true') !== -1) {
+      var thanks = document.createElement('p');
+      thanks.textContent = "Thanks — that's in my inbox. I'll follow up by email shortly.";
+      thanks.className = 'order-thanks';
+      var form = document.getElementById('order-form');
+      if (form) form.parentNode.insertBefore(thanks, form);
+      window.history.replaceState({}, document.title, window.location.pathname + '#order');
+    }
   </script>
 
 </body>
